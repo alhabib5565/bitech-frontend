@@ -9,13 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import SearchField from "./Searchfield";
 
 interface Props {
   categories: { id: string; name: string }[];
 }
 
-const SearchFilter: React.FC<Props> = ({ categories }) => {
+const CategoryFilter: React.FC<Props> = ({ categories }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -38,7 +37,7 @@ const SearchFilter: React.FC<Props> = ({ categories }) => {
   };
 
   return (
-    <div className="flex justify-start max-w-xl w-full gap-6">
+    <div className="flex justify-start max-w-xs w-full gap-6">
       <Select value={selectedCategory} onValueChange={handleCategoryChange}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="All Categories" />
@@ -51,9 +50,8 @@ const SearchFilter: React.FC<Props> = ({ categories }) => {
           ))}
         </SelectContent>
       </Select>
-      <SearchField />
     </div>
   );
 };
 
-export default SearchFilter;
+export default CategoryFilter;

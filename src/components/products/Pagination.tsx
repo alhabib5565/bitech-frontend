@@ -65,7 +65,7 @@ const MyPagination = () => {
   };
 
   return (
-    <div className="flex justify-center items-center gap-4 mt-6">
+    <div className="flex justify-center items-center gap-2">
       {/* Previous */}
       <Button onClick={previousPage} variant="outline" className="size-8 p-2">
         <ChevronLeft size={20} />

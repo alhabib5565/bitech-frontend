@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -16,12 +15,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { X, Plus } from "lucide-react";
 
 import type { TProduct } from "@/types/product.type";
 import { useGetAllCategoryQuery } from "@/redux/api/categoryApi";
 import { TCategory } from "@/types/category.type";
 import { createProduct, editProduct } from "@/action/product-action";
 
+// ✅ Schema
 const productSchema = z.object({
   name: z.string().min(1, "Product name is required"),
   description: z.string().min(1, "Description is required"),
@@ -51,6 +52,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
     setValue,
     reset,
     trigger,
+    control,
     formState: { errors },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -59,11 +61,17 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
       description: "",
       price: 0,
       categoryId: "",
-      images: [],
+      images: [""],
     },
   });
 
-  // 🧠 Reset form if in edit mode
+  const { fields, append, remove } = useFieldArray({
+    control,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    name: "images",
+  });
+
   useEffect(() => {
     if (product) {
       reset({
@@ -71,7 +79,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
         description: product.description,
         price: product.price,
         categoryId: product.category.id,
-        images: product.images || [],
+        images:
+          product.images && product.images.length > 0 ? product.images : [""],
       });
     }
   }, [product, reset]);
@@ -98,6 +107,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
       setLoading(false);
     }
   };
+
+  console.log(errors?.images);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
@@ -148,22 +159,17 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
               setValue("categoryId", val);
               trigger("categoryId");
             }}
+            defaultValue={product?.category?.id || ""}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
-              {categoryData ? (
-                categoryData?.map((cat: TCategory) => (
-                  <SelectItem key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </SelectItem>
-                ))
-              ) : (
-                <SelectItem value={"9b4e3307-1343-4fcf-ad49-b8378accfe66"}>
-                  Demo category
+              {categoryData?.map((cat: TCategory) => (
+                <SelectItem key={cat.id} value={cat.id}>
+                  {cat.name}
                 </SelectItem>
-              )}
+              ))}
             </SelectContent>
           </Select>
         )}
@@ -174,22 +180,43 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
         )}
       </div>
 
-      {/* Image */}
+      {/* Images */}
       <div>
-        <label className="block text-sm font-medium mb-1">Image URL</label>
-        <Input
-          placeholder="https://example.com/image.jpg"
-          onChange={(e) => {
-            setValue("images", [e.target.value]);
-            trigger("images");
-          }}
-          defaultValue={product?.images?.[0] || ""}
-        />
+        <label className="block text-sm font-medium mb-2">Product Images</label>
+        <div className="space-y-2">
+          {fields.map((field, index) => (
+            <div key={field.id} className="flex items-center gap-2">
+              <Input
+                {...register(`images.${index}`)}
+                placeholder="https://example.com/image.jpg"
+                type="url"
+              />
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="p-2 rounded-full bg-red-100 hover:bg-red-200"
+                title="Remove"
+              >
+                <X className="h-4 w-4 text-red-600" />
+              </button>
+            </div>
+          ))}
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => append("")}
+            className="flex items-center gap-1"
+          >
+            <Plus className="h-4 w-4" /> Add Image
+          </Button>
+        </div>
         {errors.images && (
           <p className="text-red-500 text-sm mt-1">{errors.images.message}</p>
         )}
       </div>
 
+      {/* Submit */}
       <Button type="submit" disabled={loading} className="w-full">
         {loading
           ? "Please wait..."

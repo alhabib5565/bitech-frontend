@@ -1,31 +1,31 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { jwtDecode } from "jwt-decode";
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("accessToken")?.value;
-  const loginUrl = new URL("/login", request.url);
-
-  // Redirect to login if token is not present
+  const { pathname } = request.nextUrl;
+  console.log(token, "token from middleware");
+  // if user is not logged in
   if (!token) {
-    return NextResponse.redirect(loginUrl);
+    if (pathname.startsWith("/products")) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    if (pathname === "/") {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 
-  try {
-    const user = jwtDecode(token);
-    console.log(user, "user from middleware");
-
-    // check the user role and redirect and restrict here
-  } catch (error) {
-    console.error("Error decoding token:", error);
-    return NextResponse.redirect(loginUrl);
+  // if user is logged in
+  if (token) {
+    if (pathname === "/" || pathname === "/login") {
+      return NextResponse.redirect(new URL("/products", request.url));
+    }
   }
 
-  // Proceed to the requested route
   return NextResponse.next();
 }
 
-// "Matching Paths"
 export const config = {
-  matcher: [],
+  matcher: ["/", "/login", "/products/:path*"],
 };
