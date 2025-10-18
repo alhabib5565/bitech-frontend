@@ -41,7 +41,7 @@ export async function createProduct(data: any) {
   });
 
   revalidateTag("products");
-  return await result;
+  return result;
 }
 
 // Edit Product Action
