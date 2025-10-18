@@ -24,9 +24,9 @@ const baseQueryWithAuth: ReturnType<typeof fetchBaseQuery> = async (
     baseUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth?.token;
-      // if (token) {
-      //   headers.set("Authorization", `Bearer  ${token}`);
-      // }
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
       return headers;
     },
   });

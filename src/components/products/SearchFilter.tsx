@@ -39,7 +39,6 @@ const SearchFilter: React.FC<Props> = ({ categories }) => {
 
   return (
     <div className="flex justify-start max-w-xl w-full gap-6">
-      <SearchField />
       <Select value={selectedCategory} onValueChange={handleCategoryChange}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="All Categories" />
@@ -52,6 +51,7 @@ const SearchFilter: React.FC<Props> = ({ categories }) => {
           ))}
         </SelectContent>
       </Select>
+      <SearchField />
     </div>
   );
 };

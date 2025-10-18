@@ -2,19 +2,11 @@ import { TProduct } from "@/types/product.type";
 import Image from "next/image";
 import ProductCardActionsButton from "./ProductCardActionsButton";
 import { Image as ImageIcon } from "lucide-react";
+import { isValidUrl } from "@/utils/checkIsUrl";
 
 interface ProductCardProps {
   product: TProduct;
 }
-
-const isValidUrl = (url: string) => {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
-};
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const imageUrl = product.images?.[0] || "";

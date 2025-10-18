@@ -9,6 +9,7 @@ import {
 import ProductForm from "./ProductForm";
 import React, { useState } from "react";
 import type { TProduct } from "@/types/product.type";
+import { Pencil } from "lucide-react";
 
 interface EditProductModalProps {
   product: TProduct;
@@ -21,9 +22,10 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ product }) => {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-blue-600 hover:underline"
+        className="rounded-full bg-white p-2.5 shadow transition-transform duration-300 hover:scale-110 active:scale-95"
+        aria-label="Edit product"
       >
-        Edit
+        <Pencil className="h-4 w-4" />
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>

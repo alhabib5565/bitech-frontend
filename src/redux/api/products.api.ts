@@ -33,9 +33,9 @@ const productApi = baseApi.injectEndpoints({
       providesTags: ["products"],
     }),
     searchProduct: builder.query({
-      query: (params) => ({
-        url: "/products/search",
-        params,
+      query: (searchText) => ({
+        url: `/products/search?searchedText=${searchText}`,
+        method: "GET",
       }),
       providesTags: ["products"],
     }),

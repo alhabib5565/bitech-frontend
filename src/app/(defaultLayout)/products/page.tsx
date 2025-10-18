@@ -19,7 +19,6 @@ const ProductsPage = async ({ searchParams }: TParams) => {
 
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
-  console.log(token, "token");
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/products?${query}`,
     {
