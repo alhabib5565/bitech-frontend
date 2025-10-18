@@ -1,12 +1,15 @@
 "use client";
 
+import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import type { Swiper as SwiperType } from "swiper";
 
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 interface ProductImagesProps {
   images: string[];
@@ -14,13 +17,16 @@ interface ProductImagesProps {
 }
 
 const ProductImages = ({ images, name }: ProductImagesProps) => {
+  const swiperRef = useRef<SwiperType | null>(null);
+
   console.log(images);
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <Swiper
-        modules={[Navigation, Pagination]}
-        navigation
-        pagination={{ clickable: true }}
+        modules={[Navigation]}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
         spaceBetween={10}
         slidesPerView={1}
         className="rounded-lg border border-gray-200"
@@ -39,6 +45,24 @@ const ProductImages = ({ images, name }: ProductImagesProps) => {
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* Custom Navigation Buttons */}
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={() => swiperRef.current?.slidePrev()}
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/90 hover:bg-white shadow-md"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={() => swiperRef.current?.slideNext()}
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/90 hover:bg-white shadow-md"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </Button>
     </div>
   );
 };

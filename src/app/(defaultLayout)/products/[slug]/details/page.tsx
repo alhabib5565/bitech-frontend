@@ -1,8 +1,5 @@
 import { cookies } from "next/headers";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 
 import { TProduct } from "@/types/product.type";
 import ProductImages from "@/components/product_details/ProductImages";
@@ -32,20 +29,8 @@ const ProductDetails = async ({ params }: TParams) => {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Link href="/products">
-            <Button variant="ghost" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Back
-            </Button>
-          </Link>
-        </div>
-      </header>
-
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Product Images */}
           <ProductImages images={product.images} name={product.name} />
@@ -73,8 +58,6 @@ const ProductDetails = async ({ params }: TParams) => {
 
             {/* Actions (Client Component) */}
             <ProductActions />
-
-            <Separator />
           </div>
         </div>
       </div>

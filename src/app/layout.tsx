@@ -11,8 +11,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Starter kit",
-  description: "starter kit for nextjs with redux and redux persist",
+  title: "Bitech product management system",
+  description: "Bitech product management system",
 };
 
 export default function RootLayout({

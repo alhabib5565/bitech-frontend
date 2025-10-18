@@ -57,9 +57,11 @@ export async function editProduct(id: string | number, data: any) {
 
 // Delete Product Action
 export async function deleteProduct(id: string | number) {
-  return await apiRequest(`/products/${id}/`, {
+  const result = await apiRequest(`/products/${id}/`, {
     method: "DELETE",
   });
 
   revalidateTag("products");
+
+  return result;
 }
