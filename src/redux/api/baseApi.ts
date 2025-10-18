@@ -22,12 +22,11 @@ const baseQueryWithAuth: ReturnType<typeof fetchBaseQuery> = async (
 ) => {
   const rawBaseQuery = fetchBaseQuery({
     baseUrl,
-    credentials: "include",
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth?.token;
-      if (token) {
-        headers.set("Authorization", `Bearer  ${token}`);
-      }
+      // if (token) {
+      //   headers.set("Authorization", `Bearer  ${token}`);
+      // }
       return headers;
     },
   });
@@ -51,6 +50,6 @@ const baseQueryWithAuth: ReturnType<typeof fetchBaseQuery> = async (
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithAuth,
-  tagTypes: ["User"],
+  tagTypes: ["User", "products"],
   endpoints: (builder) => ({}),
 });

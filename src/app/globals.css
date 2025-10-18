@@ -5,10 +5,10 @@
 
 /* Light Theme */
 @theme {
-  --color-background: #f5f7fa;
-  --color-foreground: #1a1a1a;
-  --color-primary: #22c55e;
-  --color-secondary: #1e40af;
+  --color-background: #eff1f3;
+  --color-foreground: #0d1821;
+  --color-primary: #4e6e5d;
+  --color-secondary: #ad8a64;
   --color-success: #22c55e;
   --color-info: #90e0ef;
   --color-warning: #facc15;
